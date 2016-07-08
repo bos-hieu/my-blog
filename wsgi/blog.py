@@ -20,14 +20,59 @@ class Post(db.Model):
         self.pub_date = datetime.utcnow()
     
 
+class User(db.Model):
+    _tablename__ = 'user'
+    id = db.Column('user_id', db.Integer, primary_key=True)
+    username = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    email = db.Column(db.String(60))
+
+    def __init__(self, username,password, email=""):
+        self.username = username
+        self.password = password
+        self.email = email
+
+        
 @app.route('/')
 def hello():
     return render_template("welcome.html")
 
 
-@app.route('/signup')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username and password:
+            user = User.query.filter_by(username=username).one()
+            if user.username == username and user.password == password:
+                return render_template('welcome.html', username=user.username)
+            else:
+                error = "This user is invalid"
+                return render_template('login.html', error = error)
+        else:
+            error = "You need to input both username and password"
+            return render_template('login.html', error = error)
+    else:
+        return render_template('login.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
-    return "This is signup page"
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        if username and password:
+            newUser = User(username = username, password = password, email = email)
+            db.session.add(newUser)
+            db.session.commit()
+            return redirect(url_for('hello'))
+        else:
+            error = "You need to input both usernam and password"
+            return render_template('signup.html', error = error)
+    else:
+        return render_template('signup.html')
 
 
 @app.route('/blog/post')
@@ -62,6 +107,10 @@ def new_post():
     else:
         return render_template('newpost.html')
 
+@app.route('/about')
+def about():
+    return "this is about page"
+    
 
 if __name__ == "__main__":
     #app.debug = True
