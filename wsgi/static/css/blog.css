@@ -1,0 +1,35 @@
+.post + .post{
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.post-heading {
+    position: relative;
+    border-bottom: 3px solid #666;
+}
+
+.post-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.post-date {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #999;
+
+}
+
+.post-content {
+    margin-top: 5px;
+}
+
+.content{
+    height: 400px;
+    width: 400px;
+}
+
+.error{
+    color: red;
+}
