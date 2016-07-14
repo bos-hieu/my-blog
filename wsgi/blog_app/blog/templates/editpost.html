@@ -1,0 +1,26 @@
+{% extends 'blog.html'%}
+
+<!-- {%block link%} -->
+
+<!-- {%endblock%} -->
+{% block content %}
+<form method="post">
+    <h1>Edit Post</h1>
+    <label>
+        <div>Title</div>
+        <input name="title" value="{{post.title}}">
+    </label>
+    <br>
+    <br>
+    <label>
+        <div>Content</div>
+        <textarea class="content" name="content" >{{post.content}}</textarea>
+    </label>
+    <p class="error">{{error}}</p>
+
+    <input type="submit" value="edit">
+	<a href="{{url_for('blog.show_post', post_id=post_id)}}">return</a>
+
+
+</form>
+{%endblock%}
