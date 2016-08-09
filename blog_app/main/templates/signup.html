@@ -1,0 +1,55 @@
+{% extends 'blog-post.html'%}
+
+{% block content %}
+<form class="form-horizontal" action='' method="POST">
+  <fieldset>
+    <div id="legend">
+      <legend class="">Sign Up</legend>
+    </div>
+
+    <div class="control-group">
+      <!-- Username -->
+      <label class="control-label"  for="username">Username</label>
+      <div class="controls">
+        <input type="text" id="username" name="username" placeholder="username" value="{{username}}" class="input-xlarge">
+        <p class="error">{{error_username}}</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <!-- E-mail -->
+      <label class="control-label" for="email">E-mail</label>
+      <div class="controls">
+        <input type="text" id="email" name="email" placeholder="email" value="{{email}}" class="input-xlarge">
+        <p class="error">{{error_email}}</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <!-- Password-->
+      <label class="control-label" for="password">Password</label>
+      <div class="controls">
+        <input type="password" id="password" name="password" placeholder="password" class="input-xlarge">
+        <p class="error">{{error_password}}</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <!-- Password -->
+      <label class="control-label"  for="password_confirm">Password (Confirm)</label>
+      <div class="controls">
+        <input type="password" id="password_confirm" name="password_confirm" placeholder="password_confirm" class="input-xlarge">
+        <p class="error">{{error_confirm}}</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <button class="btn btn-success">Sign Up</button>
+      </div>
+    </div>
+    <p> {{all_username}}</p>
+  </fieldset>
+</form>
+{% endblock %}

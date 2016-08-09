@@ -1,0 +1,134 @@
+ {% extends 'blog-post.html'%}
+
+ {% block content %}
+
+ <!-- Blog Post Content Column -->
+ <div class="main-column col-lg-8">
+
+    <!-- Blog Post -->
+
+    <!-- Title -->
+    <h1>{{post.title}}</h1>
+
+    <!-- Author -->
+    <p class="lead">
+        by <a href="#">{{post.user.username}}</a>
+
+        <!-- Date/Time -->
+        <p>
+            <span class="glyphicon glyphicon-time"></span>
+            Posted on  {{post.pub_date.strftime("%H:%M %b %d, %Y")}}
+            <a href="{{url_for('post.show_all_posts')}}"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>
+        </p>
+
+        <hr>
+
+        <!-- Post Content -->
+        <p class="lead"></p>
+        <p>{{post.content | safe}}</p>
+        <hr>
+        <br>
+
+        <!-- Blog Comments -->
+
+        <!-- Comments Form -->
+        <div class="well">
+            <h4>Leave a Comment:</h4>
+            <form role="form">
+                <div class="form-group">
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <!-- Posted Comments -->
+
+        <!-- Comment -->
+        <div class="media">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="http://placehold.it/64x64" alt="">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">Start Bootstrap
+                    <small>August 25, 2014 at 9:30 PM</small>
+                </h4>
+                Second comment
+            </div>
+        </div>
+
+        <!-- Comment -->
+        <div class="media">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="http://placehold.it/64x64" alt="">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">Start Bootstrap
+                    <small>August 25, 2014 at 9:30 PM</small>
+                </h4>
+                First comment
+            </div>
+        </div>
+
+    </div>
+
+    <br>
+    <!-- Blog Sidebar Widgets Column -->
+<div class="col-md-4 col-lg-4">
+
+    <!-- Blog Search Well -->
+    <div class="well">
+        <h4>Blog Search</h4>
+        <div class="input-group">
+            <input type="text" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <!-- /.input-group -->
+    </div>
+
+    <!-- Blog Categories Well -->
+    <div class="well">
+        <h4>Categories</h4>
+        <div class="row">
+            <div class="col-lg-6">
+                <ul class="list-unstyled">
+                    <li><a href="#">Python</a>
+                    </li>
+                    <li><a href="#">Hacking</a>
+                    </li>
+                    <li><a href="#">Flask</a>
+                    </li>
+                    <li><a href="#">HTML and CSS</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <ul class="list-unstyled">
+                    <li><a href="#">Crypto</a>
+                    </li>
+                    <li><a href="#">English</a>
+                    </li>
+                    <li><a href="#">C/C++</a>
+                    </li>
+                    <li><a href="#">Java</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+
+    <!-- Side Widget Well -->
+    <div class="well">
+        <h4>About me</h4>
+        <p>Hi guys, I'm Trung Hiếu and this is my blog project.</p>
+    </div>
+
+    </div>
+    {% endblock %}

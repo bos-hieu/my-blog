@@ -1,0 +1,31 @@
+{% extends 'blog-post.html'%}
+
+{% block content %}
+{%if posts%}
+{% for p in posts %}
+<div class="post col-sm-12">
+   <div class="post-heading">
+
+     <div class="post-title">
+      <a href="{{url_for('post.show_post', post_id=p.id)}}">{{p.title}}</a>
+  </div>
+
+  <div class="post-date">
+      <a href="{{url_for('post.edit_post',post_id = p.id)}}"><span class="glyphicon glyphicon-edit"></span></a>
+      <a href="{{url_for('post.delete_post',post_id = p.id)}}"><span class="glyphicon glyphicon-remove"></span></a>
+      {{p.pub_date.strftime('%Y-%m-%d %H:%M')}}
+  </div>
+</div>
+
+<div class="post-content">
+    {{p.content | safe}}
+</div>
+</div>
+{%endfor%}
+{%else%}
+<h3> Have no post. </h3>
+<p><a href = "{{url_for('post.new_post')}}">Create a new post</a></p>
+
+{%endif%}
+
+{% endblock %}

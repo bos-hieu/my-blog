@@ -1,0 +1,38 @@
+{% extends 'blog-post.html'%}
+
+{%block content%}
+<form class="form-horizontal" method='POST'>
+  <fieldset>
+    <div id="legend">
+      <legend>Log In</legend>
+    </div>
+
+    <!-- Username -->
+    <div class="control-group">
+    <label class="control-label" for="username">Username</label>
+      <div class="controls">
+        <input type="text" placeholder="username" name='username' required autofocus>
+      </div>
+      <br>
+    </div>
+
+    <!-- Password -->
+    <div class="control-group">
+      <label class="control-label" for="password">Password</label>
+      <div class="controls">
+        <input type="password" placeholder="Password" name='password'>
+      </div>
+    </div>
+
+    <!-- Remember me -->
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <p class='error'> {{error}} </p>
+    <div><button class="btn btn-primary" type="submit">Log In</button></div>
+  </fieldset>
+</form>
+{%endblock%}
+

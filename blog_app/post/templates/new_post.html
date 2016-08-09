@@ -1,0 +1,25 @@
+{% extends 'blog-post.html'%}
+
+<!-- {%block link%} -->
+
+<!-- {%endblock%} -->
+{% block content %}
+<form method="post" class="text-center">
+    <h1>Create New Post</h1>
+    <label class="text-left">
+        <div>Title:</div>
+        <input name="title" placeholder="title">
+    </label>
+    <br>
+    <br>
+    <label>
+        <div class="text-left">Content:</div>
+        <textarea class="content" name="content" placeholder="content"></textarea>
+    </label>
+    <p class="error">{{error}}</p>
+
+    <input type="submit" value="create">
+
+
+</form>
+{%endblock%}
