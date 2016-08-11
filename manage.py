@@ -1,6 +1,8 @@
 from flask_script import Manager, Server
+
 from blog_app.app_factory import create_app
 from blog_app.models import *
+
 import settings
 
 
@@ -11,7 +13,6 @@ db.init_app(app)
 db.create_all()
 
 manager = Manager(app)
-
 
 #Initializing server instance
 server = Server(host=settings.APP_HOST, port=settings.APP_PORT)

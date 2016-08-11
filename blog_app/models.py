@@ -1,11 +1,10 @@
 from datetime import datetime
-#from flask import Flask, render_template, url_for, request, redirect, flash, jsonify, abort
+
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-#from .app_factory import db
-
 
 db = SQLAlchemy()
+
 
 class Role(db.Model):
     __tablename__ ='roles'
@@ -48,7 +47,8 @@ class User(db.Model):
             'email': self.email,
             'registered': self.registered_date
             }
-        
+
+      
 class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column('post_id', db.Integer, primary_key=True)

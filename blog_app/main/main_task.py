@@ -31,9 +31,10 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        
         if username and password:
-            user = User.query.filter_by(username=username).one()
-            if user.username == username and user.verify_password(password):
+            user = User.query.filter_by(username=username).first()
+            if user and user.username == username and user.verify_password(password):
                 #return render_template('welcome.html', username=user.username)
                 session['logged_in'] = True
                 flash("You were logged in")
@@ -42,6 +43,7 @@ def login():
             else:
                 error = "This user is invalid"
                 return render_template('login.html', error = error)
+
         else:
             error = "You need to input both username and password"
             return render_template('login.html', error = error)
