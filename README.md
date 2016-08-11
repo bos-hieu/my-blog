@@ -1,7 +1,6 @@
 My Blog
 =========================
-This is my blog project, with flask, python and postgresql
-Project can be show [here](http://blog-blog1994.rhcloud.com/)
+This is my blog project, with flask, python and postgresql. Project can be show [here](http://blog-blog1994.rhcloud.com/)
 
 App structure
 ---------------------
