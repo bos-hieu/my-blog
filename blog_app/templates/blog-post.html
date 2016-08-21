@@ -12,6 +12,7 @@
 
   <!-- Bootstrap Core CSS -->
   <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap/css/bootstrap.min.css")}}">
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename="bootstrap/css/bootstrap-theme.min.css")}}">
   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename="css/blog.css")}}">
@@ -101,9 +102,17 @@
   <div class="container">
     <div class="row">
       <hr>
-      <p class=" text-center">
-        @ Copyright 2016 Bos Hieu
-      </p>
+      <span class="text-left">@ Copyright 2016 Bos Hieu</span>
+
+      <div class="nav-text pull-right">
+      <!-- target="_blank": to open link in new tab
+           i tag: italic
+      -->
+	    <a href="https://www.facebook.com/caube.he" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a>
+      <a href="https://twitter.com/bos_hieu" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+      <a href="https://plus.google.com/+Hi%E1%BA%BFuL%C3%AATrung94/about" target="_blank"><i class="fa fa-google-plus fa-2x"></i></a>
+      <a href="https://github.com/bos-hieu" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+      </div>
     </div>
   </div>
 </footer>

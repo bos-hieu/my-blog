@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from ..users import user
-from ..models import User, Post, db
+from ..models import Users, Posts, db
 from ..decorators import login_required
 from ..valids import *
 
@@ -15,7 +15,7 @@ from ..valids import *
 @login_required
 def user_profile(username):
     """Show profile of user"""
-    current_user = User.query.filter_by(username=username).first()
+    current_user = Users.query.filter_by(username=username).first()
     
     if current_user:
         return render_template("show_profile.html",
@@ -27,7 +27,8 @@ def user_profile(username):
 @login_required
 def edit_profile(user_id):
     """Edit profile of user"""
-    edited_profile = User.query.filter_by(id=user_id).first()
+    #edited_profile = User.query.filter_by(id=user_id).first()
+    edited_profile = Users.query.get(user_id)
 
     if request.method == 'POST':
         username = request.form['username']
@@ -51,7 +52,7 @@ def edit_profile(user_id):
 @user.route('/<int:user_id>/resetpassword')
 def reset_password(user_id):
     """Reset password of user"""
-    edited_profile = User.query.filter_by(id=user_id).first()
+    edited_profile = Users.query.filter_by(id=user_id).first()
     return render_template("reset_password.html",current_user = edited_profile)
 
 
@@ -59,21 +60,24 @@ def reset_password(user_id):
 @login_required
 def show_user_posts(user_id):
     """Show all posts of user"""
-    user_posts = Post.query.filter_by(user_id=user_id).all()
+    #user_posts = Post.query.filter_by(user_id=user_id).all()
+    user_posts = Users.query.get(user_id).posts
     return render_template('user_posts.html', posts = user_posts)
 
 
 @user.route('s/JSON')
 def users_JSON():
     """Return about JSON format of all users"""
-    users = db.session.query(User).all()
+    users = db.session.query(Users).all()
     return jsonify(Users = [i.serialize for i in users])
 
 
 @user.route('/<int:user_id>/JSON')
 def user_JSON(user_id):
     """Return about JSON format of user"""
-    user = User.query.filter_by(id=user_id).first()
+    #user = User.query.filter_by(id=user_id).first()
+    user = Users.query.get(user_id)
+    
 
     if user:
         return jsonify(user = user.serialize)

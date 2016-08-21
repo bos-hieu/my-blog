@@ -11,15 +11,15 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     
 
-class User(db.Model):
-    __tablename__ = 'user'
+class Users(db.Model):
+    __tablename__ = 'users'
     id = db.Column('user_id', db.Integer, primary_key=True)
     username = db.Column(db.String(60), nullable=False)
     password = db.Column(db.String(60), nullable=False)
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(60))
     registered_date = db.Column(db.DateTime)
-    posts = db.relationship('Post', backref='user')
+    posts = db.relationship('Posts', backref='users')
 
     def __init__(self, username,password, email = ""):
         self.username = username
@@ -48,14 +48,23 @@ class User(db.Model):
             'registered': self.registered_date
             }
 
+
+posts_tags = db.Table('posts_tags',
+                      db.Column('post_id', db.Integer, db.ForeignKey('posts.post_id')),
+                      db.Column('tag_id', db.Integer, db.ForeignKey('tags.tag_id')),
+                      db.PrimaryKeyConstraint('post_id', 'tag_id'))
+
       
-class Post(db.Model):
-    __tablename__ = 'post'
+class Posts(db.Model):
+    __tablename__ = 'posts'
     id = db.Column('post_id', db.Integer, primary_key=True)
     title = db.Column(db.String(60))
     content = db.Column(db.TEXT)
     pub_date = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    cataloge_id = db.Column(db.Integer, db.ForeignKey('cataloges.cataloge_id'))
+    tags = db.relationship('Tags', secondary = posts_tags, backref = 'posts')
+    comments = db.relationship('Comments', backref='posts')
 
     def __init__(self, title, content):
         self.title = title
@@ -72,3 +81,37 @@ class Post(db.Model):
             'pub_date': self.pub_date,
             'user_id': self.user_id
             }
+
+
+class Tags(db.Model):
+    __tablename__ = 'tags'
+    id = db.Column('tag_id', db.Integer, primary_key=True)
+    name = db.Column(db.String(60))
+    #posts_t = db.relationship('Posts', secondary = posts_tags, backref = 'tags')
+
+    def __init__(self, name):
+        self.name = name
+
+
+class Catalogues(db.Model):
+    __tablename__ = 'cataloges'
+    id = db.Column('cataloge_id', db.Integer, primary_key=True)
+    name = db.Column(db.String(60))
+    posts = db.relationship('Posts', backref='cataloges')
+
+    def __init__(self, name):
+        self.name = name
+
+
+class Comments(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column('comment_id', db.Integer, primary_key=True)
+    author = db.Column(db.String(60))
+    content = db.Column(db.String(250))
+    pub_date = db.Column(db.DateTime)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'))
+
+    def __init__(self, author, content):
+        self.author = author
+        self.content = content
+        self.pub_date = datetime.utcnow()

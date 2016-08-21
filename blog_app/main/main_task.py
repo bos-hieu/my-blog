@@ -1,10 +1,12 @@
 from datetime import datetime
+
 from flask import Flask, render_template, url_for, request, redirect, flash, \
      jsonify, abort, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from ..main import main
-from ..models import User, Post, db
+from ..models import Users, Posts, db
 from ..valids import *
 
 @main.route('/')
@@ -14,17 +16,17 @@ def show_resume():
 
 #@main.route('/')
 #def hello():
- #   return render_template("welcome.html")
-    #return render_template("portfolio.html")
+    #return render_template("welcome.html")
 
 @main.route('/portfolio')
 def about():
-    #return render_template("about_me.html")
     return render_template("portfolio.html")
+
 
 @main.route('/welcome/<username>')
 def welcome(username):
     return render_template('welcome.html', username = username, username_logged = username)
+
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -33,9 +35,8 @@ def login():
         password = request.form['password']
         
         if username and password:
-            user = User.query.filter_by(username=username).first()
+            user = Users.query.filter_by(username=username).first()
             if user and user.username == username and user.verify_password(password):
-                #return render_template('welcome.html', username=user.username)
                 session['logged_in'] = True
                 flash("You were logged in")
                 session['username'] = username
@@ -50,12 +51,14 @@ def login():
     else:
         return render_template('login.html')
 
+
 @main.route('/logout')
 def logout():
     session.pop('logged_in', None)
     session['username'] = ""
     flash("You were logged out")
     return redirect(url_for('post.show_all_posts'))
+
 
 @main.route('/signup', methods=['GET', 'POST'])
 def sign_up():
@@ -100,18 +103,16 @@ def sign_up():
             have_error = True
 
         if have_error == True:
-            #return redirect("signup.html", **params)
             return render_template('signup.html', **params)
         else:
             params = dict(username = username,
                           password = password,
                           email = email)
-            #newUser = User(username = username, password = password, email = email)
             """
                 **params: pass a dict of params to function
                 *params: pass a list of params to function
             """
-            newUser = User(**params)
+            newUser = Users(**params)
             db.session.add(newUser)
             db.session.commit()
             session['logged_in'] = True

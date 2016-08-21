@@ -6,55 +6,78 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from ..post import post
-from ..models import User, Post, db
+from ..models import Users, Posts, db, Tags, posts_tags, Catalogues, Comments
 from ..decorators import login_required
 from ..valids import *
 
 
 @post.route('/all')
 def show_all_posts():
-    ''''Show all posts of blog'''
-    posts = Post.query.order_by(Post.pub_date.desc()).all()
-    return render_template("show_all_posts.html", posts = posts)
+    '''Show all posts of blog'''
+    catalogues = Catalogues.query.all()
+    posts = Posts.query.order_by(Posts.pub_date.desc()).all()
+    return render_template("show_all_posts.html",
+                           posts = posts,
+                           catalogues=catalogues)
 
 
 @post.route('/<int:post_id>')
 def show_post(post_id):
-    """Show a post of blog"""
-    post = Post.query.filter_by(id=post_id).first()
+    '''Show a post of blog'''
+    catalogues = Catalogues.query.all()
+    post = Posts.query.get(post_id)
 
     if post:
-        return render_template("show_post.html", post = post)
+        return render_template("show_post.html",
+                               post = post,
+                               catalogues=catalogues)
     return "Haven't this post!"
 
 
 @post.route('/new', methods=['GET','POST'])
 @login_required
 def new_post():
-    ''''Create a new post'''
+    '''Create a new post'''
+    catalogues = Catalogues.query.all()
+    tags = Tags.query.all()
+    
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
+        catalogue_name = request.form.get('catalogue')
+        tags_name = request.form.getlist('tags')
         error = "We need both a title and some content!"
 
         if title and content:
-            new_post = Post(title = title, content = content.replace("\n", "<br>"))
-            current_user = User.query.filter_by(username=session.get('username')).one()
-            new_post.user = current_user
+            new_post = Posts(title = title, content = content.replace("\n", "<br>"))
+            current_user = Users.query.filter_by(username=session.get('username')).first()
+            catalogue = Catalogues.query.filter_by(name = catalogue_name).first()
+            new_post.users = current_user
+            new_post.cataloges = catalogue
+            for tag_name in tags_name:
+                tag = Tags.query.filter_by(name=tag_name).first()
+                new_post.tags.append(tag)
             db.session.add(new_post)
             db.session.commit()
-            return redirect(url_for('post.show_post',post_id = new_post.id))
+        
+            return redirect(url_for('post.show_post',
+                                    post_id = new_post.id))
         else:
-            return render_template('new_post.html', error = error)
+            return render_template('new_post.html',
+                                   error = error,
+                                   catalogues = catalogues,
+                                   tags = tags)
     else:
-        return render_template('new_post.html')
+        return render_template('new_post.html',
+                               catalogues = catalogues,
+                               tags = tags)
 
 
 @post.route('/<int:post_id>/edit', methods=['GET','POST'])
 @login_required
 def edit_post(post_id):
     ''''edit a post'''
-    edited_post = Post.query.filter_by(id=post_id).first()
+    edited_post = Posts.query.get(post_id)
 
     if request.method == 'POST':
         title = request.form['title']
@@ -81,7 +104,8 @@ def delete_post(post_id):
     """delete a post"""
     
     if request.method == 'POST':
-        post = Post.query.filter_by(id=post_id).first()
+        #post = Post.query.filter_by(id=post_id).first()
+        post = Posts.query.get(post_id)
         db.session.delete(post)
         db.session.commit()
         return redirect(url_for('post.show_all_posts'))
@@ -89,17 +113,59 @@ def delete_post(post_id):
         return render_template('delete_post.html', post_id = post_id)
 
 
+@post.route('s/tag/<tag_name>')
+def show_posts_of_tag(tag_name):
+    "Show all post of tag_name"
+    
+    tag = Tags.query.filter_by(name = tag_name).first()
+    posts = tag.posts
+
+    return render_template("show_all_posts.html",
+                           posts = posts,
+                           catalogues = Catalogues.query.all())
+
+
+@post.route('s/catalogue/<catalogue_name>')
+def show_posts_of_catalogue(catalogue_name):
+    "Show all post of catalogue_name"
+
+    catalogue = Catalogues.query.filter_by(name=catalogue_name).first()
+    catalogues = Catalogues.query.all()
+    posts = catalogue.posts
+
+    return render_template("show_all_posts.html",
+                           posts = posts,
+                           catalogues = Catalogues.query.all())
+
+
+@post.route('/<int:post_id>', methods=('GET','POST'))
+@login_required
+def new_comment(post_id):
+    "Create a new comment in post have post_id"
+    if request.method == 'POST':
+        comment_content = request.form.get('comment')
+
+        if comment_content:
+            post = Posts.query.get(post_id)
+            comment = Comments(session.get('username'), comment_content)
+            comment.posts = post
+            db.session.add(comment)
+            db.session.commit()
+            
+    return redirect(url_for('post.show_post',post_id = post.id))      
+
 @post.route('s/JSON')
 def posts_JSON():
     """Return JSON format for all posts"""
-    posts = db.session.query(Post).all()
+    posts = db.session.query(Posts).all()
     return jsonify(posts = [p.serialize for p in posts])
 
 
 @post.route('/<int:post_id>/JSON')
 def post_JSON(post_id):
     """Return JSON format for a post"""
-    post = db.session.query(Post).filter_by(id=post_id).first()
+    #post = db.session.query(Post).filter_by(id=post_id).first()
+    post = db.session.query(Posts).get(post_id)
     
     if post:
         return jsonify(post = post.serialize)

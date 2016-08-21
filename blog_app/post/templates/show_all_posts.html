@@ -2,34 +2,43 @@
 
  {% block content %}
  <div class="main-column col-lg-8">
-     {%if posts%}
-     {% for p in posts %}
-         <div class="well layout-post">
-         <h2>
+   {%if posts%}
+   {% for p in posts %}
+   <div class="well">
+       <div>
+           <h2 class="">
             <a href="{{url_for('post.show_post', post_id=p.id)}}">
                 {{p.title}}
             </a>
         </h2>
         <p class="lead"> by
             <a href="#">
-                {{p.user.username}}
+                {{p.users.username}}
             </a>
         </p>
-        <p>
+        <p class="">
             <span class="glyphicon glyphicon-time">
             </span>
             Posted on {{p.pub_date.strftime('%Y-%m-%d %H:%M')}}
         </p>
-        <hr>
-        <p>{{p.content | safe}}</p>
     </div>
-
+    <hr>
+    <p>{{p.content | safe}}</p>
+    <br>
+    {%if p.tags%}
+    <span>Tags: </span>
+    {%for tag in p.tags%}
+    <a href="{{url_for('post.show_posts_of_tag', tag_name=tag.name)}}">{{tag.name}}, </a>
     {%endfor%}
-
-    {%else%}
-    <h4> Have no post. </h4>
-	<a href="{{url_for('post.new_post')}}"><span>Create New Post</span></a>
     {%endif%}
+</div>
+
+{%endfor%}
+
+{%else%}
+<h4> Have no post. </h4>
+<a href="{{url_for('post.new_post')}}"><span>Create New Post</span></a>
+{%endif%}
 </div>
 
 <!-- Blog Sidebar Widgets Column -->
@@ -53,33 +62,20 @@
     <div class="well">
         <h4>Categories</h4>
         <div class="row">
-            <div class="col-lg-6">
-                <ul class="list-unstyled">
-                    <li><a href="#">Python</a>
-                    </li>
-                    <li><a href="#">Hacking</a>
-                    </li>
-                    <li><a href="#">Flask</a>
-                    </li>
-                    <li><a href="#">HTML and CSS</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-6">
-                <ul class="list-unstyled">
-                    <li><a href="#">Crypto</a>
-                    </li>
-                    <li><a href="#">English</a>
-                    </li>
-                    <li><a href="#">C/C++</a>
-                    </li>
-                    <li><a href="#">Java</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="list-unstyled">
+
+                {%if catalogues%}
+                {%for catalogue in catalogues%}
+                <div class="col-lg-6">
+                    <li><a href="{{url_for('post.show_posts_of_catalogue', catalogue_name=catalogue.name)}}">{{catalogue.name}}</a></li>
+                </div>
+                {%endfor%}
+                {%endif%}
+            </ul>
         </div>
         <!-- /.row -->
     </div>
+
 
     <!-- Side Widget Well -->
     <div class="well">
