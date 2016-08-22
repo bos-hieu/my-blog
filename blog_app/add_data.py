@@ -11,16 +11,16 @@ def add_data():
     db.session.add(user2)
     db.session.commit()
 
-    #Add cataloges
-    cata1 = Catalogues("FullStack")
+    #Add categories
+    cata1 = Categories("FullStack")
     db.session.add(cata1)
     db.session.commit()
 
-    cata2 = Catalogues("English")
+    cata2 = Categories("English")
     db.session.add(cata2)
     db.session.commit()
 
-    cata3 = Catalogues("Crypto")
+    cata3 = Categories("Crypto")
     db.session.add(cata3)
     db.session.commit()
 
@@ -49,8 +49,8 @@ def add_data():
                   """This is first post.
                   <br>This post have four tags and two comments.""")
     post1.users = user_post
-    catalogue = Catalogues.query.get(1)
-    post1.cataloges = catalogue
+    category = Categories.query.get(1)
+    post1.categories = category
     for id in tag_ids:
         tag = Tags.query.get(id)
         post1.tags.append(tag)
@@ -61,8 +61,8 @@ def add_data():
                   """This is second post. <br>
                   This post have two tags and one comment.""")
     post2.users = user_post
-    catalogue = Catalogues.query.get(2)
-    post2.cataloges = catalogue
+    category = Categories.query.get(2)
+    post2.categories = category
     tag = Tags.query.get(1)
     post2.tags.append(tag)
     tag = Tags.query.get(3)
@@ -74,8 +74,8 @@ def add_data():
                   """This is third post.
                   <br>This post have one tag and one comment.""")
     post3.users = user_post
-    catalogue = Catalogues.query.get(3)
-    post3.cataloges = catalogue
+    category = Categories.query.get(3)
+    post3.categories = category
     tag = Tags.query.get(2)
     post3.tags.append(tag)
     db.session.add(post3)

@@ -6,7 +6,7 @@
 {% block content %}
 <form method="post">
     <h1>Edit Post</h1>
-    <label>
+    <!-- <label>
         <div>Title</div>
         <input name="title" value="{{post.title}}">
     </label>
@@ -15,11 +15,56 @@
     <label>
         <div>Content</div>
         <textarea class="content" name="content" >{{post.content}}</textarea>
-    </label>
+    </label> -->
+
+    <!-- Title -->
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input class="form-control" name="title" value="{{post.title}}"" id="title" required>
+
+    </div>
+
+    <!-- Content -->
+    <div class="form-group">
+        <label for="comment">Content: </label>
+        <textarea class="form-control" rows="10" id="comment" name="content" placeholder="Type content here" type="text" required>{{post.content}}</textarea>
+    </div>
+
+    <!-- Categories -->
+    <div class="form-group">
+        <label for="categories">Categories:</label>
+        <select class="form-control" id="categories" name="category">
+            {%if categories%}
+            {%for category in categories%}
+            {%if category.id == post.category_id%}
+            <option selected>{{category.name}}</option>
+            {%else%}
+            <option>{{category.name}}</option>
+            {%endif%}
+            {%endfor%}
+            {%endif%}
+        </select>
+    </div>
+
+    <!-- Tags -->
+    <div class="form-group">
+        <label for="tags">Tags:</label>
+        <select multiple class="form-control" id="tags" name="tags">
+            {%if tags%}
+            {%for tag in tags%}
+            {%if tag in post.tags%}
+            <option selected>{{tag.name}}</option>
+            {%else%}
+            <option>{{tag.name}}</option>
+            {%endif%}
+            {%endfor%}
+            {%endif%}
+        </select>
+    </div>
     <p class="error">{{error}}</p>
 
     <input type="submit" value="edit">
-	<a href="{{url_for('post.show_post', post_id=post_id)}}">return</a>
+	<a href="{{url_for('post.show_post', post_id=post.id)}}">return</a>
 
 
 </form>

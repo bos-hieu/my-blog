@@ -43,7 +43,7 @@
             <h4>Leave a Comment:</h4>
             <form role="form", method="post">
                 <div class="form-group">
-                    <textarea class="form-control" rows="2" name="comment"></textarea>
+                    <textarea class="form-control" rows="2" name="comment" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -98,10 +98,10 @@
             <div class="row">
                 <ul class="list-unstyled">
 
-                    {%if catalogues%}
-                    {%for catalogue in catalogues%}
+                    {%if categories%}
+                    {%for category in categories%}
                     <div class="col-lg-6">
-                        <li><a href="{{url_for('post.show_posts_of_catalogue', catalogue_name=catalogue.name)}}">{{catalogue.name}}</a></li>
+                        <li><a href="{{url_for('post.show_posts_of_category', category_name=category.name)}}">{{category.name}}</a></li>
                     </div>
                     {%endfor%}
                     {%endif%}

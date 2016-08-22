@@ -20,13 +20,13 @@
         <textarea class="form-control" rows="10" id="comment" name="content" placeholder="Type content here" type="text" required></textarea>
     </div>
 
-    <!-- Catalogues -->
+    <!-- Categories -->
     <div class="form-group">
-        <label for="catalogues">Catalogues:</label>
-        <select class="form-control" id="catalogues" name="catalogue">
-            {%if catalogues%}
-            {%for catalogue in catalogues%}
-            <option>{{catalogue.name}}</option>
+        <label for="categories">Categories:</label>
+        <select class="form-control" id="categories" name="category">
+            {%if categories%}
+            {%for category in categories%}
+            <option>{{category.name}}</option>
             {%endfor%}
             {%endif%}
         </select>

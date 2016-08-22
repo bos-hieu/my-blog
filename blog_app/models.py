@@ -9,7 +9,7 @@ db = SQLAlchemy()
 class Role(db.Model):
     __tablename__ ='roles'
     id = db.Column(db.Integer, primary_key = True)
-    
+
 
 class Users(db.Model):
     __tablename__ = 'users'
@@ -54,7 +54,7 @@ posts_tags = db.Table('posts_tags',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.tag_id')),
                       db.PrimaryKeyConstraint('post_id', 'tag_id'))
 
-      
+
 class Posts(db.Model):
     __tablename__ = 'posts'
     id = db.Column('post_id', db.Integer, primary_key=True)
@@ -62,7 +62,7 @@ class Posts(db.Model):
     content = db.Column(db.TEXT)
     pub_date = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    cataloge_id = db.Column(db.Integer, db.ForeignKey('cataloges.cataloge_id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
     tags = db.relationship('Tags', secondary = posts_tags, backref = 'posts')
     comments = db.relationship('Comments', backref='posts')
 
@@ -79,7 +79,8 @@ class Posts(db.Model):
             'title': self.title,
             'content': self.content,
             'pub_date': self.pub_date,
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'category_id': self.category_id
             }
 
 
@@ -93,11 +94,11 @@ class Tags(db.Model):
         self.name = name
 
 
-class Catalogues(db.Model):
-    __tablename__ = 'cataloges'
-    id = db.Column('cataloge_id', db.Integer, primary_key=True)
+class Categories(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column('category_id', db.Integer, primary_key=True)
     name = db.Column(db.String(60))
-    posts = db.relationship('Posts', backref='cataloges')
+    posts = db.relationship('Posts', backref='categories')
 
     def __init__(self, name):
         self.name = name
@@ -115,3 +116,14 @@ class Comments(db.Model):
         self.author = author
         self.content = content
         self.pub_date = datetime.utcnow()
+
+    @property
+    def serialize(self):
+
+        return {
+            'comment_id': self.id,
+            'author': self.author,
+            'content': self.content,
+            'pub_date': self.pub_date,
+            'post_id': self.post_id
+            }
