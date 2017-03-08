@@ -12,3 +12,5 @@ TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templat
 #Database app settings
 SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:123456@localhost/blog'
 SQLALCHEMY_ECHO = False
+
+#For testing
