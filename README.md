@@ -22,6 +22,9 @@ This app is based on __Blueprints__ concepts. There are three blueprints; main, 
 4. __decorators.py__: module for decorators such as required_login.
 5. __models.py__ module for keeping databate settings.
 
+Test Mode
+---------
+Update for test merge branch
 
 Packages and tools is used in my project.
 -------------------------------
